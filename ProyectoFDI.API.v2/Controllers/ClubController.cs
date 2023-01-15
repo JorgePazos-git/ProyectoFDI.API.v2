@@ -24,7 +24,7 @@ namespace ProyectoFDI.API.v2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Club>>> GetClubs()
         {
-            return await _context.Clubs.ToListAsync();
+            return await _context.Clubs.Include("Deportista").ToListAsync();
         }
 
         // GET: api/Club/5
