@@ -22,23 +22,45 @@ namespace ProyectoFDI.API.v2.Controllers
 
         // GET: api/Entrenador
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Entrenador>>> GetEntrenadors()
+        public async Task<ActionResult<IEnumerable<Entrenador>>> GetEntrenadors(string? searchFor)
         {
-            return await _context.Entrenadors.ToListAsync();
+            var datos = _context.Entrenadors.Include("IdProNavigation").Include("Deportista").
+                Include("IdUsuNavigation");
+
+            if (string.IsNullOrWhiteSpace(searchFor))
+            {
+                return await datos.ToListAsync();
+            }
+            else
+            {
+                return await datos.Where(p =>
+                    p.NombresEnt.ToLower().Contains(searchFor.ToLower()) ||
+                    p.ApellidosEnt.ToLower().Contains(searchFor.ToLower()) ||
+                    p.CedulaEnt.ToLower().Contains(searchFor.ToLower()) ||
+                    p.IdProNavigation.NombrePro.ToLower().Contains(searchFor.ToLower()) ||
+                    p.IdUsuNavigation.NombreUsu.ToLower().Contains(searchFor.ToLower())
+
+                ).ToListAsync();
+            }
         }
 
         // GET: api/Entrenador/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Entrenador>> GetEntrenador(int id)
         {
-            var entrenador = await _context.Entrenadors.FindAsync(id);
+            var entrenador = await _context
+                .Entrenadors
+                .Where(x => x.IdEnt == id)
+                .Include("IdProNavigation").Include("Deportista").
+                Include("IdUsuNavigation")
+                .ToListAsync();
 
             if (entrenador == null)
             {
                 return NotFound();
             }
 
-            return entrenador;
+            return entrenador[0];
         }
 
         // PUT: api/Entrenador/5
