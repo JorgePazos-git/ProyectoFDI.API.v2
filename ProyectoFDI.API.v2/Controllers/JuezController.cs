@@ -22,23 +22,41 @@ namespace ProyectoFDI.API.v2.Controllers
 
         // GET: api/Juez
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Juez>>> GetJuezs()
+        public async Task<ActionResult<IEnumerable<Juez>>> GetJuezs(string? searchFor)
         {
-            return await _context.Juezs.ToListAsync();
+            var datos = _context.Juezs.Include("IdProNavigation").Include("IdUsuNavigation");
+
+            if (string.IsNullOrWhiteSpace(searchFor))
+            {
+                return await datos.ToListAsync();
+            }
+            else
+            {
+                return await datos.Where(p =>
+                    p.ApellidosJuez.ToLower().Contains(searchFor.ToLower()) ||
+                    p.NombresJuez.ToLower().Contains(searchFor.ToLower()) ||
+                    p.CedulaJuez.ToLower().Contains(searchFor.ToLower()) ||
+                    p.IdProNavigation.NombrePro.ToLower().Contains(searchFor.ToLower()) ||
+                    p.IdUsuNavigation.NombreUsu.ToLower().Contains(searchFor.ToLower())                
+                ).ToListAsync();
+            }
         }
 
         // GET: api/Juez/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Juez>> GetJuez(int id)
         {
-            var juez = await _context.Juezs.FindAsync(id);
+            var juez = await _context.Juezs
+                .Where(x => x.IdJuez == id)
+                .Include("IdProNavigation").Include("IdUsuNavigation")
+                .ToListAsync();
 
             if (juez == null)
             {
                 return NotFound();
             }
 
-            return juez;
+            return juez[0];
         }
 
         // PUT: api/Juez/5

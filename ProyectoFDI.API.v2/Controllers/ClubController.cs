@@ -31,14 +31,31 @@ namespace ProyectoFDI.API.v2.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Club>> GetClub(int id)
         {
-            var club = await _context.Clubs.FindAsync(id);
+            var club = await _context.Clubs
+                .Include("Deportista").Include("Deportista.IdCatNavigation")
+                .Include("Deportista.IdEntNavigation").Include("Deportista.IdGenNavigation")
+                .Include("Deportista.IdProNavigation").Include("Deportista.IdUsuNavigation")
+                .Include("Deportista.DeportistaModalidads.IdModNavigation")
+                .Where(club => club.IdClub == id)
+                .ToListAsync();
 
             if (club == null)
             {
                 return NotFound();
             }
 
-            return club;
+            return club[0];
+        }
+
+        [HttpGet("ListaDeportistas/{id}")]
+        public async Task<ActionResult<IEnumerable<Deportistum>>> ListaDeportistas(int id)
+        {
+            var datos = await _context
+                .Deportista
+                .Where(p => p.IdClubNavigation.IdClub == id)
+                .Include("IdClubNavigation")
+                .ToListAsync<Deportistum>();
+            return datos;
         }
 
         // PUT: api/Club/5
