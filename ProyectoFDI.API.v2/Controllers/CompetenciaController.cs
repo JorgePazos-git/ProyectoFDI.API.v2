@@ -22,23 +22,52 @@ namespace ProyectoFDI.API.v2.Controllers
 
         // GET: api/Competencia
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Competencium>>> GetCompetencia()
+        public async Task<ActionResult<IEnumerable<Competencium>>> GetCompetencia(string? searchFor)
         {
-            return await _context.Competencia.ToListAsync();
+            var datos = _context.Competencia.Include("DetalleCompetencia.IdDepNavigation")
+                .Include("IdCatNavigation").Include("IdGenNavigation")
+                .Include("IdJuezNavigation").Include("IdModNavigation")
+                .Include("IdSedeNavigation");
+
+            if (string.IsNullOrWhiteSpace(searchFor))
+            {
+                return await datos.ToListAsync();
+            }
+            else
+            {
+                return await datos.Where(p =>
+                    p.NombreCom.ToLower().Contains(searchFor.ToLower()) ||
+                    p.FechaInicioCom.ToString().Contains(searchFor) ||
+                    p.IdCatNavigation.NombreCat.ToLower().Contains(searchFor.ToLower()) ||
+                    p.FechaFinCom.ToString().Contains(searchFor) ||
+                    p.IdJuezNavigation.NombresJuez.ToLower().Contains(searchFor.ToLower()) ||
+                    p.IdGenNavigation.NombreGen.ToLower().Contains(searchFor.ToLower()) ||
+                    p.IdJuezNavigation.ApellidosJuez.ToLower().Contains(searchFor.ToLower()) ||
+                    p.IdModNavigation.DescripcionMod.ToLower().Contains(searchFor.ToLower()) ||
+                    p.IdSedeNavigation.NombreSede.ToLower().Contains(searchFor.ToLower())
+
+                ).ToListAsync();
+            }
         }
 
         // GET: api/Competencia/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Competencium>> GetCompetencium(int id)
         {
-            var competencium = await _context.Competencia.FindAsync(id);
+            var competencium = await _context.Competencia
+                .Where(x => x.IdCom == id)
+                .Include("DetalleCompetencia.IdDepNavigation").Include("DetalleCompetencia")
+                .Include("IdCatNavigation").Include("IdGenNavigation")
+                .Include("IdJuezNavigation").Include("IdModNavigation")
+                .Include("IdSedeNavigation")
+                .ToListAsync();
 
             if (competencium == null)
             {
                 return NotFound();
             }
 
-            return competencium;
+            return competencium[0];
         }
 
         // PUT: api/Competencia/5

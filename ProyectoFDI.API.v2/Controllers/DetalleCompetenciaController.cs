@@ -24,21 +24,25 @@ namespace ProyectoFDI.API.v2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DetalleCompetencium>>> GetDetalleCompetencia()
         {
-            return await _context.DetalleCompetencia.ToListAsync();
+            return await _context.DetalleCompetencia.Include("IdDepNavigation")
+                .Include("IdComNavigation").ToListAsync();
         }
 
         // GET: api/DetalleCompetencia/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DetalleCompetencium>> GetDetalleCompetencium(int id)
         {
-            var detalleCompetencium = await _context.DetalleCompetencia.FindAsync(id);
+            var detalleCompetencium = await _context.DetalleCompetencia
+                .Where(x => x.IdDetalle == id)
+                .Include("IdDepNavigation").Include("IdComNavigation")
+                .ToListAsync();
 
             if (detalleCompetencium == null)
             {
                 return NotFound();
             }
 
-            return detalleCompetencium;
+            return detalleCompetencium[0];
         }
 
         // PUT: api/DetalleCompetencia/5
