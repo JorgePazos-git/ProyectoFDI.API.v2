@@ -116,13 +116,18 @@ namespace ProyectoFDI.API.v2.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDeportistum(int id)
         {
-            var deportistum = await _context.Deportista.FindAsync(id);
+            var deportistum = await _context.Deportista
+                .Where(x => x.IdDep == id)
+                .Include("IdProNavigation").Include("IdCatNavigation")
+                .Include("IdClubNavigation").Include("IdEntNavigation").Include("IdGenNavigation")
+                .Include("IdUsuNavigation").Include("DeportistaModalidads")
+                .ToListAsync();
             if (deportistum == null)
             {
                 return NotFound();
             }
 
-            _context.Deportista.Remove(deportistum);
+            _context.Deportista.Remove(deportistum[0]);
             await _context.SaveChangesAsync();
 
             return NoContent();
