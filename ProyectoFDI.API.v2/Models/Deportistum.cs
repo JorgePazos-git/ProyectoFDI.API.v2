@@ -12,6 +12,7 @@ public partial class Deportistum
     public string? ApellidosDep { get; set; }
 
     public string? CedulaDep { get; set; }
+    public bool? ActivoDep { get; set; }
 
     public int? IdPro { get; set; }
 
