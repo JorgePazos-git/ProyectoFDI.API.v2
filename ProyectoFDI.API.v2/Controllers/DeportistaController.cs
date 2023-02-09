@@ -27,7 +27,7 @@ namespace ProyectoFDI.API.v2.Controllers
         {
             var datos = _context.Deportista.Include("IdProNavigation").Include("IdCatNavigation")
                 .Include("IdClubNavigation").Include("IdEntNavigation").Include("IdGenNavigation")
-                .Include("IdUsuNavigation").Include("DeportistaModalidads.IdModNavigation");
+                .Include("IdUsuNavigation");
 
             if (string.IsNullOrWhiteSpace(searchFor))
             {
@@ -42,12 +42,15 @@ namespace ProyectoFDI.API.v2.Controllers
                     p.IdClubNavigation.NombreClub.ToLower().Contains(searchFor.ToLower()) ||
                     p.IdEntNavigation.NombresEnt.ToLower().Contains(searchFor.ToLower()) ||
                     p.IdGenNavigation.NombreGen.ToLower().Contains(searchFor.ToLower()) ||
-                    p.IdUsuNavigation.NombreUsu.ToLower().Contains(searchFor.ToLower())||
+                    p.IdUsuNavigation.NombreUsu.ToLower().Contains(searchFor.ToLower()) ||
                     p.NombresDep.ToLower().Contains(searchFor.ToLower()) ||
                     p.IdProNavigation.NombrePro.ToLower().Contains(searchFor.ToLower())
 
                 ).ToListAsync();
             }
+
+            //return await _context.Deportista.Include("IdProNavigation").Include("IdCatNavigation")
+            //    .ToListAsync();
         }
 
         // GET: api/Deportista/5
