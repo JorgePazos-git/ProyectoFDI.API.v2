@@ -24,10 +24,7 @@ namespace ProyectoFDI.API.v2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Competencium>>> GetCompetencia(string? searchFor)
         {
-            var datos = _context.Competencia.Include("DetalleCompetencia.IdDepNavigation")
-                .Include("IdCatNavigation").Include("IdGenNavigation")
-                .Include("IdJuezNavigation").Include("IdModNavigation")
-                .Include("IdSedeNavigation");
+            var datos = _context.Competencia.Include("DetalleCompetencia.IdDepNavigation");
 
             if (string.IsNullOrWhiteSpace(searchFor))
             {
@@ -57,9 +54,6 @@ namespace ProyectoFDI.API.v2.Controllers
             var competencium = await _context.Competencia
                 .Where(x => x.IdCom == id)
                 .Include("DetalleCompetencia.IdDepNavigation").Include("DetalleCompetencia")
-                .Include("IdCatNavigation").Include("IdGenNavigation")
-                .Include("IdJuezNavigation").Include("IdModNavigation")
-                .Include("IdSedeNavigation")
                 .ToListAsync();
 
             if (competencium == null)

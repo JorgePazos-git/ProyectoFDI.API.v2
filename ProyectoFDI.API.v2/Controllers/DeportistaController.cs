@@ -25,9 +25,7 @@ namespace ProyectoFDI.API.v2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Deportistum>>> GetDeportista(string? searchFor)
         {
-            var datos = _context.Deportista.Include("IdProNavigation").Include("IdCatNavigation")
-                .Include("IdClubNavigation").Include("IdEntNavigation").Include("IdGenNavigation")
-                .Include("IdUsuNavigation");
+            var datos = _context.Deportista;
 
             if (string.IsNullOrWhiteSpace(searchFor))
             {
@@ -49,7 +47,7 @@ namespace ProyectoFDI.API.v2.Controllers
                 ).ToListAsync();
             }
 
-            //return await _context.Deportista.Include("IdProNavigation").Include("IdCatNavigation")
+            //return await _context.Deportista
             //    .ToListAsync();
         }
 
@@ -60,9 +58,6 @@ namespace ProyectoFDI.API.v2.Controllers
             var deportistum = await _context
                 .Deportista
                 .Where(x => x.IdDep == id)
-                .Include("IdProNavigation").Include("IdCatNavigation")
-                .Include("IdClubNavigation").Include("IdEntNavigation").Include("IdGenNavigation")
-                .Include("IdUsuNavigation").Include("DeportistaModalidads")
                 .ToListAsync();
 
             if (deportistum == null)
@@ -121,9 +116,6 @@ namespace ProyectoFDI.API.v2.Controllers
         {
             var deportistum = await _context.Deportista
                 .Where(x => x.IdDep == id)
-                .Include("IdProNavigation").Include("IdCatNavigation")
-                .Include("IdClubNavigation").Include("IdEntNavigation").Include("IdGenNavigation")
-                .Include("IdUsuNavigation").Include("DeportistaModalidads")
                 .ToListAsync();
             if (deportistum == null)
             {
