@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Versioning;
-using ProyectoFDI.API.v2.Models;
+using ProyectoFDI.API.v2.ModelsV2;
 
 namespace ProyectoFDI.API.v2.Controllers
 {
