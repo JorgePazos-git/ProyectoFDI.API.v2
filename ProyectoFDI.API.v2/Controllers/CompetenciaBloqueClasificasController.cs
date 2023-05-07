@@ -49,6 +49,24 @@ namespace ProyectoFDI.API.v2.Controllers
             return competenciaBloqueClasifica;
         }
 
+        [HttpGet("compebloque/{id}")]
+        public async Task<ActionResult<IEnumerable<CompetenciaBloqueClasifica>>> GetBloqueCompetencia(int id)
+        {
+            if (_context.CompetenciaBloqueClasificas == null)
+            {
+                return NotFound();
+            }
+            var competenciaBloqueClasifica = await _context.CompetenciaBloqueClasificas
+                .Where(x => x.IdCom == id).ToListAsync();
+
+            if (competenciaBloqueClasifica == null)
+            {
+                return NotFound();
+            }
+
+            return competenciaBloqueClasifica;
+        }
+
         // PUT: api/CompetenciaBloqueClasificas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
