@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace ProyectoFDI.API.v2.ModelsV2;
+namespace ProyectoFDI.API.v2.ModelsV3;
 
 public partial class ProyectoFdiV2Context : DbContext
 {
@@ -28,6 +28,8 @@ public partial class ProyectoFdiV2Context : DbContext
     public virtual DbSet<DeportistaModalidad> DeportistaModalidads { get; set; }
 
     public virtual DbSet<Deportistum> Deportista { get; set; }
+
+    public virtual DbSet<DetalleCompetenciaDificultad> DetalleCompetenciaDificultads { get; set; }
 
     public virtual DbSet<DetalleCompetencium> DetalleCompetencia { get; set; }
 
@@ -235,6 +237,39 @@ public partial class ProyectoFdiV2Context : DbContext
             entity.HasOne(d => d.IdUsuNavigation).WithMany(p => p.Deportista)
                 .HasForeignKey(d => d.IdUsu)
                 .HasConstraintName("FK__deportist__id_us__71D1E811");
+        });
+
+        modelBuilder.Entity<DetalleCompetenciaDificultad>(entity =>
+        {
+            entity.HasKey(e => e.IdDetalleDificultad).HasName("PK__detalle___433E45E6AB3BBF49");
+
+            entity.ToTable("detalle_competencia_dificultad");
+
+            entity.Property(e => e.IdDetalleDificultad).HasColumnName("id_detalle_dificultad");
+            entity.Property(e => e.Clas1Res)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("clas1_res");
+            entity.Property(e => e.Clas2Res)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("clas2_res");
+            entity.Property(e => e.FinalRes)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("final_res");
+            entity.Property(e => e.IdCom).HasColumnName("id_com");
+            entity.Property(e => e.IdDep).HasColumnName("id_dep");
+            entity.Property(e => e.Puesto).HasColumnName("puesto");
+            entity.Property(e => e.PuestoInicialRes).HasColumnName("puesto_inicial_res");
+
+            entity.HasOne(d => d.IdComNavigation).WithMany(p => p.DetalleCompetenciaDificultads)
+                .HasForeignKey(d => d.IdCom)
+                .HasConstraintName("FK__detalle_c__id_co__634EBE90");
+
+            entity.HasOne(d => d.IdDepNavigation).WithMany(p => p.DetalleCompetenciaDificultads)
+                .HasForeignKey(d => d.IdDep)
+                .HasConstraintName("FK__detalle_c__id_de__625A9A57");
         });
 
         modelBuilder.Entity<DetalleCompetencium>(entity =>

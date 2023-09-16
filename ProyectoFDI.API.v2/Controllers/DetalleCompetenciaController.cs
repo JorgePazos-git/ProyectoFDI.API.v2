@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoFDI.API.v2.ModelsV2;
+using ProyectoFDI.API.v2.ModelsV3;
 
 namespace ProyectoFDI.API.v2.Controllers
 {

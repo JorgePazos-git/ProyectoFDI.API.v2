@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ProyectoFDI.API.v2.ModelsV2;
+namespace ProyectoFDI.API.v2.ModelsV3;
 
-public partial class Categorium
+public partial class Genero
 {
-    public int IdCat { get; set; }
+    public int IdGen { get; set; }
 
-    public string? NombreCat { get; set; }
+    public string? NombreGen { get; set; }
 
     public virtual ICollection<Competencium> Competencia { get; } = new List<Competencium>();
 

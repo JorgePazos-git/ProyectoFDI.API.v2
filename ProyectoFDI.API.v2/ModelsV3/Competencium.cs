@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ProyectoFDI.API.v2.ModelsV2;
+namespace ProyectoFDI.API.v2.ModelsV3;
 
 public partial class Competencium
 {
@@ -28,6 +28,8 @@ public partial class Competencium
     public virtual ICollection<CompetenciaBloqueClasifica> CompetenciaBloqueClasificas { get; } = new List<CompetenciaBloqueClasifica>();
 
     public virtual ICollection<DetalleCompetencium> DetalleCompetencia { get; } = new List<DetalleCompetencium>();
+
+    public virtual ICollection<DetalleCompetenciaDificultad> DetalleCompetenciaDificultads { get; } = new List<DetalleCompetenciaDificultad>();
 
     public virtual Categorium? IdCatNavigation { get; set; }
 

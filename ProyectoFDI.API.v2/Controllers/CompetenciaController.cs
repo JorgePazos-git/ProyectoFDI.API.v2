@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoFDI.API.v2.ModelsV2;
+using ProyectoFDI.API.v2.ModelsV3;
 
 namespace ProyectoFDI.API.v2.Controllers
 {
@@ -24,7 +24,9 @@ namespace ProyectoFDI.API.v2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Competencium>>> GetCompetencia(string? searchFor)
         {
-            var datos = _context.Competencia.Include("DetalleCompetencia.IdDepNavigation");
+            var datos = _context.Competencia.Include("DetalleCompetencia.IdDepNavigation")
+                .Include("DetalleCompetenciaDificultads.IdDepNavigation");
+            
 
             if (string.IsNullOrWhiteSpace(searchFor))
             {
@@ -54,6 +56,7 @@ namespace ProyectoFDI.API.v2.Controllers
             var competencium = await _context.Competencia
                 .Where(x => x.IdCom == id)
                 .Include("DetalleCompetencia.IdDepNavigation").Include("DetalleCompetencia")
+                .Include("DetalleCompetenciaDificultads.IdDepNavigation").Include("DetalleCompetenciaDificultads")
                 .ToListAsync();
 
             if (competencium == null)
