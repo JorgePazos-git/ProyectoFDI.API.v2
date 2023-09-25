@@ -51,6 +51,26 @@ namespace ProyectoFDI.API.v2.Controllers
             //    .ToListAsync();
         }
 
+        [HttpGet("{genero}-{categoria}")]
+        public async Task<ActionResult<IEnumerable<Deportistum>>> GetDeportista(string genero, string categoria)
+        {
+            var datos = _context.Deportista;
+
+            if (string.IsNullOrWhiteSpace(genero) && string.IsNullOrWhiteSpace(categoria))
+            {
+                return await datos.ToListAsync();
+            }
+            else
+            {
+                return await datos.Where(p => p.IdCatNavigation.NombreCat.ToLower().Contains(categoria.ToLower()) &&
+                    p.IdGenNavigation.NombreGen.ToLower().Contains(genero.ToLower())
+                ).ToListAsync();
+            }
+
+            //return await _context.Deportista
+            //    .ToListAsync();
+        }
+
         // GET: api/Deportista/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Deportistum>> GetDeportistum(int id)
