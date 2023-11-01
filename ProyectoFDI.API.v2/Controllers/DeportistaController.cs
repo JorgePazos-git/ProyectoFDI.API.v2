@@ -71,6 +71,30 @@ namespace ProyectoFDI.API.v2.Controllers
             //    .ToListAsync();
         }
 
+        [HttpGet("competencia/{id}")]
+        public async Task<ActionResult<IEnumerable<Deportistum>>> GetDeportista(int id)
+        {
+            
+
+            if (id != null)
+            {
+                var detallesBloque = await _context.CompetenciaBloqueClasificas
+                    .Where(p => p.IdCom == id).ToListAsync();
+
+                var deportistaIds = detallesBloque
+                    .Select(dc => dc.IdDep).ToList();
+
+                return await _context.Deportista
+                    .Where(d => deportistaIds.Contains(d.IdDep))
+                    .ToListAsync();
+            }
+            else
+            {
+                return null;
+
+            }
+        }
+
         // GET: api/Deportista/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Deportistum>> GetDeportistum(int id)
