@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace ProyectoFDI.API.v2.ModelsV3;
+namespace ProyectoFDI.API.v2.ModelsV4;
 
 public partial class ProyectoFdiV2Context : DbContext
 {
@@ -83,7 +83,7 @@ public partial class ProyectoFdiV2Context : DbContext
         {
             entity.HasKey(e => e.IdCompeBloqueCla).HasName("PK__competen__12B9B98C7FD9C068");
 
-            entity.ToTable("competencia_bloque_clasifica");
+            entity.ToTable("competencia_bloque_clasifica", tb => tb.HasTrigger("tr_subir_puesto"));
 
             entity.Property(e => e.IdCompeBloqueCla).HasColumnName("id_compe_bloque_cla");
             entity.Property(e => e.ClasiBloque).HasColumnName("clasi_bloque");

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProyectoFDI.API.v2.ModelsV3;
+using ProyectoFDI.API.v2.ModelsV4;
 
 namespace ProyectoFDI.API.v2.Controllers
 {
@@ -31,15 +31,15 @@ namespace ProyectoFDI.API.v2.Controllers
             return await _context.CompetenciaBloqueClasificas.ToListAsync();
         }
 
-        // GET: api/CompetenciaBloqueClasificas/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CompetenciaBloqueClasifica>> GetCompetenciaBloqueClasifica(int id)
+        [HttpGet("compebloque/{id}")]
+        public async Task<ActionResult<IEnumerable<CompetenciaBloqueClasifica>>> GetBloqueCompetencia(int id)
         {
-          if (_context.CompetenciaBloqueClasificas == null)
-          {
-              return NotFound();
-          }
-            var competenciaBloqueClasifica = await _context.CompetenciaBloqueClasificas.FindAsync(id);
+            if (_context.CompetenciaBloqueClasificas == null)
+            {
+                return NotFound();
+            }
+            var competenciaBloqueClasifica = await _context.CompetenciaBloqueClasificas
+                .Where(x => x.IdCom == id).ToListAsync();
 
             if (competenciaBloqueClasifica == null)
             {
@@ -49,15 +49,15 @@ namespace ProyectoFDI.API.v2.Controllers
             return competenciaBloqueClasifica;
         }
 
-        [HttpGet("compebloque/{id}")]
-        public async Task<ActionResult<IEnumerable<CompetenciaBloqueClasifica>>> GetBloqueCompetencia(int id)
+        // GET: api/CompetenciaBloqueClasificas/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CompetenciaBloqueClasifica>> GetCompetenciaBloqueClasifica(int id)
         {
-            if (_context.CompetenciaBloqueClasificas == null)
-            {   
-                return NotFound();
-            }
-            var competenciaBloqueClasifica = await _context.CompetenciaBloqueClasificas
-                .Where(x => x.IdCom == id).ToListAsync();
+          if (_context.CompetenciaBloqueClasificas == null)
+          {
+              return NotFound();
+          }
+            var competenciaBloqueClasifica = await _context.CompetenciaBloqueClasificas.FindAsync(id);
 
             if (competenciaBloqueClasifica == null)
             {

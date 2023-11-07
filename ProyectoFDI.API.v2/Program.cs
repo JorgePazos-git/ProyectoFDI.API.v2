@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ProyectoFDI.API.v2.ModelsV3;
+using ProyectoFDI.API.v2.ModelsV4;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

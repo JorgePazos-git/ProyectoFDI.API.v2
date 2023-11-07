@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ProyectoFDI.API.v2.ModelsV3;
+namespace ProyectoFDI.API.v2.ModelsV4;
 
 public partial class Juez
 {
