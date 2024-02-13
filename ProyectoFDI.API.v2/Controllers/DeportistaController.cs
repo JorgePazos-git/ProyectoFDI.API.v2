@@ -70,7 +70,7 @@ namespace ProyectoFDI.API.v2.Controllers
             //return await _context.Deportista
             //    .ToListAsync();
         }
-
+        /*
         [HttpGet("competencia/{id}")]
         public async Task<ActionResult<IEnumerable<Deportistum>>> GetDeportista(int id)
         {
@@ -93,7 +93,7 @@ namespace ProyectoFDI.API.v2.Controllers
                 return null;
 
             }
-        }
+        }*/
 
         // GET: api/Deportista/5
         [HttpGet("{id}")]
@@ -111,6 +111,35 @@ namespace ProyectoFDI.API.v2.Controllers
 
             return deportistum[0];
         }
+        [HttpGet("competencia/{id}")]
+        public async Task<ActionResult<IEnumerable<Deportistum>>> GetDeportistasPorCompetencia(int id)
+        {
+            // Verificar si la competencia existe
+            var competencia = await _context.Competencia.FindAsync(id);
+            if (competencia == null)
+            {
+                return NotFound("Competencia no encontrada");
+            }
+
+            // Consultar los IDs de los deportistas asignados a esta competencia a través de la tabla ResultadoBloque
+            var idsDeportistasAsignados = await _context.ResultadoBloques
+                .Where(rb => rb.IdCom == id)
+                .Select(rb => rb.IdDep)
+                .ToListAsync();
+
+            if (idsDeportistasAsignados.Count == 0)
+            {
+                return NotFound("No se encontraron deportistas asignados a esta competencia");
+            }
+
+            // Consultar los deportistas asignados usando los IDs obtenidos
+            var deportistasAsignados = await _context.Deportista
+                .Where(d => idsDeportistasAsignados.Contains(d.IdDep))
+                .ToListAsync();
+
+            return deportistasAsignados;
+        }
+
 
         // PUT: api/Deportista/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

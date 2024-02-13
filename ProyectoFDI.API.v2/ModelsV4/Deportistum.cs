@@ -27,8 +27,6 @@ public partial class Deportistum
 
     public int? IdEnt { get; set; }
 
-    public virtual ICollection<CompetenciaBloqueClasifica> CompetenciaBloqueClasificas { get; } = new List<CompetenciaBloqueClasifica>();
-
     public virtual ICollection<DeportistaModalidad> DeportistaModalidads { get; } = new List<DeportistaModalidad>();
 
     public virtual ICollection<DetalleCompetencium> DetalleCompetencia { get; } = new List<DetalleCompetencium>();
@@ -46,4 +44,8 @@ public partial class Deportistum
     public virtual Provincium? IdProNavigation { get; set; }
 
     public virtual Usuario? IdUsuNavigation { get; set; }
+
+    public virtual ICollection<PuntajeBloque> PuntajeBloques { get; } = new List<PuntajeBloque>();
+
+    public virtual ICollection<ResultadoBloque> ResultadoBloques { get; } = new List<ResultadoBloque>();
 }
