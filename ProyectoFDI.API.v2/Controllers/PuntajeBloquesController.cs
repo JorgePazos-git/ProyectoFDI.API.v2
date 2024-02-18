@@ -49,6 +49,22 @@ namespace ProyectoFDI.API.v2.Controllers
             return puntajeBloque;
         }
 
+        [HttpGet("{idcom}/{iddep}/{numerobloque}")]
+        public async Task<ActionResult<PuntajeBloque>> GetPuntajeBloque(int idcom, int iddep, int numerobloque)
+        {
+            var puntajeBloque = await _context.PuntajeBloques
+                .Where(p => p.IdCom == idcom && p.IdDep == iddep && p.NumeroBloque == numerobloque)
+                .SingleOrDefaultAsync();
+
+            if (puntajeBloque == null)
+            {
+                return NotFound();
+            }
+
+            return puntajeBloque;
+        }
+
+
         // PUT: api/PuntajeBloques/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
