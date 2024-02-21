@@ -111,8 +111,8 @@ namespace ProyectoFDI.API.v2.Controllers
 
             return deportistum[0];
         }
-        [HttpGet("competencia/{id}")]
-        public async Task<ActionResult<IEnumerable<Deportistum>>> GetDeportistasPorCompetencia(int id)
+        [HttpGet("competencia/{id}/{etapa}")]
+        public async Task<ActionResult<IEnumerable<Deportistum>>> GetDeportistasPorCompetencia(int id,String etapa)
         {
             // Verificar si la competencia existe
             var competencia = await _context.Competencia.FindAsync(id);
@@ -123,7 +123,7 @@ namespace ProyectoFDI.API.v2.Controllers
 
             // Consultar los IDs de los deportistas asignados a esta competencia a través de la tabla ResultadoBloque
             var idsDeportistasAsignados = await _context.ResultadoBloques
-                .Where(rb => rb.IdCom == id)
+                .Where(rb => rb.IdCom == id &  rb.Etapa== etapa )
                 .Select(rb => rb.IdDep)
                 .ToListAsync();
 

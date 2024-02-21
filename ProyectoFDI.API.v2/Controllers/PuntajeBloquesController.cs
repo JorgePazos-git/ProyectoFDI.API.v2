@@ -48,12 +48,57 @@ namespace ProyectoFDI.API.v2.Controllers
 
             return puntajeBloque;
         }
+        [HttpGet("competencia/{id}")]
+        public async Task<ActionResult<IEnumerable<Deportistum>>> GetDeportistasPorCompetencia(int id)
+        {
+            // Verificar si la competencia existe
+            var competencia = await _context.Competencia.FindAsync(id);
+            if (competencia == null)
+            {
+                return NotFound("Competencia no encontrada");
+            }
 
-        [HttpGet("{idcom}/{iddep}/{numerobloque}")]
-        public async Task<ActionResult<PuntajeBloque>> GetPuntajeBloque(int idcom, int iddep, int numerobloque)
+            // Consultar los IDs de los deportistas asignados a esta competencia a través de la tabla ResultadoBloque
+            var idsDeportistasAsignados = await _context.ResultadoBloques
+                .Where(rb => rb.IdCom == id)
+                .Select(rb => rb.IdDep)
+                .ToListAsync();
+
+            if (idsDeportistasAsignados.Count == 0)
+            {
+                return NotFound("No se encontraron deportistas asignados a esta competencia");
+            }
+
+            // Consultar los deportistas asignados usando los IDs obtenidos
+            var deportistasAsignados = await _context.Deportista
+                .Where(d => idsDeportistasAsignados.Contains(d.IdDep))
+                .ToListAsync();
+
+            return deportistasAsignados;
+        }
+
+        [HttpGet("Competencia/{id}/{etapa}")]
+        public async Task<ActionResult<IEnumerable<PuntajeBloque>>> GetPuntajeBloqueByCom(int id, string etapa)
+        {
+            var puntajeBloques = await _context.PuntajeBloques
+                .Where(pb => pb.IdCom == id && pb.Etapa == etapa)
+                .ToListAsync();
+
+            if (puntajeBloques == null || !puntajeBloques.Any())
+            {
+                return NotFound();
+            }
+
+            return puntajeBloques;
+        }
+
+
+
+        [HttpGet("{idcom}/{iddep}/{numerobloque}/{etapa}")]
+        public async Task<ActionResult<PuntajeBloque>> GetPuntajeBloque(int idcom, int iddep, int numerobloque,string etapa)
         {
             var puntajeBloque = await _context.PuntajeBloques
-                .Where(p => p.IdCom == idcom && p.IdDep == iddep && p.NumeroBloque == numerobloque)
+                .Where(p => p.IdCom == idcom && p.IdDep == iddep && p.NumeroBloque == numerobloque && p.Etapa == etapa)
                 .SingleOrDefaultAsync();
 
             if (puntajeBloque == null)
