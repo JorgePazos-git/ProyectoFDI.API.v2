@@ -26,7 +26,7 @@ namespace ProyectoFDI.API.v2.Controllers
         {
             var datos = _context.Competencia.Include("DetalleCompetencia.IdDepNavigation")
                 .Include("DetalleCompetenciaDificultads.IdDepNavigation");
-            
+
 
             if (string.IsNullOrWhiteSpace(searchFor))
             {
@@ -48,6 +48,16 @@ namespace ProyectoFDI.API.v2.Controllers
                 ).ToListAsync();
             }
         }
+
+
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Competencium>>> GetCompetencia(string? searchFor)
+        //{
+        //    return await _context.Competencia.ToListAsync();
+
+        //}
+
+
 
         // GET: api/Competencia/5
         [HttpGet("{id}")]

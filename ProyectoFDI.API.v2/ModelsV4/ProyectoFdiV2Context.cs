@@ -47,11 +47,13 @@ public partial class ProyectoFdiV2Context : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
+    public virtual DbSet<VistaCompetencium> VistaCompetencia { get; set; }
+
     public virtual DbSet<VistaPuntajesDeportista> VistaPuntajesDeportistas { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=(localdb)\\proyectofdi.database.windows.net;Initial Catalog=ProyectoFDI.v2;Integrated Security=True");
+        => optionsBuilder.UseSqlServer("Data Source=(localdb)\\proyectofdi.database.windows.net;Initial Catalog=ProyectoFDI.v2;Integrated Security=True;Encrypt=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -462,6 +464,45 @@ public partial class ProyectoFdiV2Context : DbContext
                 .HasColumnName("roles_usu");
         });
 
+        modelBuilder.Entity<VistaCompetencium>(entity =>
+        {
+            entity
+                .ToView("VistaCompetencia");
+
+            entity.Property(e => e.ActivoCom).HasColumnName("activo_com");
+            entity.Property(e => e.DescripcionModalidad)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("descripcion_modalidad");
+            entity.Property(e => e.FechaFinCom)
+                .HasColumnType("date")
+                .HasColumnName("fechaFin_com");
+            entity.Property(e => e.FechaInicioCom)
+                .HasColumnType("date")
+                .HasColumnName("fechaInicio_com");
+            entity.Property(e => e.Genero)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("genero");
+            entity.Property(e => e.IdCom).HasColumnName("id_com");
+            entity.Property(e => e.NombreCategoria)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("nombre_categoria");
+            entity.Property(e => e.NombreCom)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("nombre_com");
+            entity.Property(e => e.NombreDeSede)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("nombre_de_sede");
+            entity.Property(e => e.NombreDelJuez)
+                .HasMaxLength(101)
+                .IsUnicode(false)
+                .HasColumnName("nombre_del_juez");
+        });
+
         modelBuilder.Entity<VistaPuntajesDeportista>(entity =>
         {
             entity
@@ -485,8 +526,8 @@ public partial class ProyectoFdiV2Context : DbContext
             entity.Property(e => e.ZonasRealizadas).HasColumnName("zonas_realizados");
         });
 
-        OnModelCreatingPartial(modelBuilder);
-    }
+       
+}
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
