@@ -91,7 +91,20 @@ namespace ProyectoFDI.API.v2.Controllers
 
             return puntajeBloques;
         }
+        [HttpGet("{idcom}/{iddep}/{etapa}")]
+        public async Task<ActionResult<IEnumerable<PuntajeBloque>>> GetPuntajeDep(int idcom, int iddep, string etapa)
+        {
+            var puntajeBloque = await _context.PuntajeBloques
+                .Where(p => p.IdCom == idcom && p.IdDep == iddep && p.Etapa == etapa)
+                .ToListAsync();
 
+            if (puntajeBloque == null)
+            {
+                return NotFound();
+            }
+
+            return puntajeBloque;
+        }
 
 
         [HttpGet("{idcom}/{iddep}/{numerobloque}/{etapa}")]
@@ -180,21 +193,7 @@ namespace ProyectoFDI.API.v2.Controllers
         {
             return (_context.PuntajeBloques?.Any(e => e.IdBloPts == id)).GetValueOrDefault();
         }
-        // GET: api/PuntajeBloques/ByIdCom/5
-        [HttpGet("Competencia/{id}")]
-        public async Task<ActionResult<IEnumerable<PuntajeBloque>>> GetPuntajeBloqueByCom(int id)
-        {
-            var puntajeBloques = await _context.PuntajeBloques
-                .Where(pb => pb.IdCom == id)
-                .ToListAsync();
-
-            if (puntajeBloques == null || !puntajeBloques.Any())
-            {
-                return NotFound();
-            }
-
-            return puntajeBloques;
-        }
+       
 
     }
 }

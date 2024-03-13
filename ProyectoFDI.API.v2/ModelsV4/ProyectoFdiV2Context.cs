@@ -506,7 +506,7 @@ public partial class ProyectoFdiV2Context : DbContext
                 .IsUnicode(false)
                 .HasColumnName("nombre_del_juez");
         });
-
+z
         modelBuilder.Entity<VistaPuntajesDeportista>(entity =>
         {
             entity
