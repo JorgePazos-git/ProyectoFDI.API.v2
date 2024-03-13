@@ -51,12 +51,16 @@ public partial class ProyectoFdiV2Context : DbContext
 
     public virtual DbSet<VistaPuntajesDeportista> VistaPuntajesDeportistas { get; set; }
 
+    public virtual DbSet<VistaViasResultado> VistaViasResultados { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=(localdb)\\proyectofdi.database.windows.net;Initial Catalog=ProyectoFDI.v2;Integrated Security=True;Encrypt=True");
+        => optionsBuilder.UseSqlServer("Data Source=MSI;Initial Catalog=ProyectoFDI.v2;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AS");
+
         modelBuilder.Entity<Categorium>(entity =>
         {
             entity.HasKey(e => e.IdCat).HasName("PK__categori__D54686DE2D646EAA");
@@ -513,21 +517,48 @@ public partial class ProyectoFdiV2Context : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("etapa");
-            entity.Property(e => e.IdVw).HasColumnName("id_vw");
             entity.Property(e => e.IdCom).HasColumnName("id_com");
             entity.Property(e => e.IdDep).HasColumnName("id_dep");
+            entity.Property(e => e.IdVw).HasColumnName("id_vw");
+            entity.Property(e => e.IntentosTops).HasColumnName("intentos_tops");
+            entity.Property(e => e.IntentosZonas).HasColumnName("intentos_zonas");
             entity.Property(e => e.NombreDep)
                 .HasMaxLength(101)
                 .IsUnicode(false)
                 .HasColumnName("nombre_dep");
-            entity.Property(e => e.IntentosTops).HasColumnName("intentos_tops");
-            entity.Property(e => e.IntentosZonas).HasColumnName("intentos_zonas");
             entity.Property(e => e.TopsRealizados).HasColumnName("tops_realizados");
-            entity.Property(e => e.ZonasRealizadas).HasColumnName("zonas_realizados");
+            entity.Property(e => e.ZonasRealizados).HasColumnName("zonas_realizados");
         });
 
-       
-}
+        modelBuilder.Entity<VistaViasResultado>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vista_vias_resultado");
+
+            entity.Property(e => e.Clasificacion1)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("clasificacion_1");
+            entity.Property(e => e.Clasificacion2)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("clasificacion_2");
+            entity.Property(e => e.Deportista)
+                .HasMaxLength(101)
+                .IsUnicode(false)
+                .HasColumnName("deportista");
+            entity.Property(e => e.Final)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("final");
+            entity.Property(e => e.IdCompe).HasColumnName("id_compe");
+            entity.Property(e => e.PuestoClasificacion).HasColumnName("puesto_clasificacion");
+            entity.Property(e => e.PuestoFinal).HasColumnName("puesto_final");
+        });
+
+        OnModelCreatingPartial(modelBuilder);
+    }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

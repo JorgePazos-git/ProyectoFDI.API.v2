@@ -1,14 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoFDI.API.v2.ModelsV4;
+using System.ComponentModel.DataAnnotations;
 
 public partial class VistaPuntajesDeportista
 {
     [Key]
-    public long  IdVw { get; set; } 
+    public long? IdVw { get; set; }
 
     public int? IdCom { get; set; }
 
@@ -24,5 +23,5 @@ public partial class VistaPuntajesDeportista
 
     public int? IntentosZonas { get; set; }
 
-    public int? ZonasRealizadas { get; set; }
+    public int? ZonasRealizados { get; set; }
 }

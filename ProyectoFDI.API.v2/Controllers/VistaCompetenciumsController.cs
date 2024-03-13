@@ -24,10 +24,10 @@ namespace ProyectoFDI.API.v2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VistaCompetencium>>> GetVistaCompetencia()
         {
-          if (_context.VistaCompetencia == null)
-          {
-              return NotFound();
-          }
+            if (_context.VistaCompetencia == null)
+            {
+                return NotFound();
+            }
             return await _context.VistaCompetencia.ToListAsync();
         }
 
@@ -35,10 +35,10 @@ namespace ProyectoFDI.API.v2.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<VistaCompetencium>> GetVistaCompetencium(int id)
         {
-          if (_context.VistaCompetencia == null)
-          {
-              return NotFound();
-          }
+            if (_context.VistaCompetencia == null)
+            {
+                return NotFound();
+            }
             var vistaCompetencium = await _context.VistaCompetencia.FindAsync(id);
 
             if (vistaCompetencium == null)
@@ -85,10 +85,10 @@ namespace ProyectoFDI.API.v2.Controllers
         [HttpPost]
         public async Task<ActionResult<VistaCompetencium>> PostVistaCompetencium(VistaCompetencium vistaCompetencium)
         {
-          if (_context.VistaCompetencia == null)
-          {
-              return Problem("Entity set 'ProyectoFdiV2Context.VistaCompetencia'  is null.");
-          }
+            if (_context.VistaCompetencia == null)
+            {
+                return Problem("Entity set 'ProyectoFdiV2Context.VistaCompetencia'  is null.");
+            }
             _context.VistaCompetencia.Add(vistaCompetencium);
             try
             {
