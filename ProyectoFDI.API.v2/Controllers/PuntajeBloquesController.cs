@@ -91,7 +91,20 @@ namespace ProyectoFDI.API.v2.Controllers
 
             return puntajeBloques;
         }
+        [HttpGet("{idcom}/{iddep}/{etapa}")]
+        public async Task<ActionResult<IEnumerable<PuntajeBloque>>> GetPuntajeDep(int idcom, int iddep, string etapa)
+        {
+            var puntajeBloque = await _context.PuntajeBloques
+                .Where(p => p.IdCom == idcom && p.IdDep == iddep && p.Etapa == etapa)
+                .ToListAsync();
 
+            if (puntajeBloque == null)
+            {
+                return NotFound();
+            }
+
+            return puntajeBloque;
+        }
 
 
         [HttpGet("{idcom}/{iddep}/{numerobloque}/{etapa}")]
