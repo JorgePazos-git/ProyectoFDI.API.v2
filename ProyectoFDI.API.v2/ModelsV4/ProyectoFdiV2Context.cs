@@ -51,6 +51,12 @@ public partial class ProyectoFdiV2Context : DbContext
 
     public virtual DbSet<VistaPuntajesDeportista> VistaPuntajesDeportistas { get; set; }
 
+    public virtual DbSet<VistaVeloClasificacion> VistaVeloClasificacions { get; set; }
+
+    public virtual DbSet<VistaVeloFinal> VistaVeloFinals { get; set; }
+
+    public virtual DbSet<VistaViasClasificacion> VistaViasClasificacions { get; set; }
+
     public virtual DbSet<VistaViasResultado> VistaViasResultados { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -471,6 +477,7 @@ public partial class ProyectoFdiV2Context : DbContext
         modelBuilder.Entity<VistaCompetencium>(entity =>
         {
             entity
+
                 .ToView("VistaCompetencia");
 
             entity.Property(e => e.ActivoCom).HasColumnName("activo_com");
@@ -506,7 +513,7 @@ public partial class ProyectoFdiV2Context : DbContext
                 .IsUnicode(false)
                 .HasColumnName("nombre_del_juez");
         });
-z
+
         modelBuilder.Entity<VistaPuntajesDeportista>(entity =>
         {
             entity
@@ -528,6 +535,80 @@ z
                 .HasColumnName("nombre_dep");
             entity.Property(e => e.TopsRealizados).HasColumnName("tops_realizados");
             entity.Property(e => e.ZonasRealizados).HasColumnName("zonas_realizados");
+        });
+
+        modelBuilder.Entity<VistaVeloClasificacion>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vista_velo_clasificacion");
+
+            entity.Property(e => e.Deportista)
+                .HasMaxLength(101)
+                .IsUnicode(false)
+                .HasColumnName("deportista");
+            entity.Property(e => e.IdCompe).HasColumnName("id_compe");
+            entity.Property(e => e.Puesto).HasColumnName("puesto");
+            entity.Property(e => e.ResultadoClasificacion)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("resultado_clasificacion");
+        });
+
+        modelBuilder.Entity<VistaVeloFinal>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vista_velo_final");
+
+            entity.Property(e => e.Deportista)
+                .HasMaxLength(101)
+                .IsUnicode(false)
+                .HasColumnName("deportista");
+            entity.Property(e => e.IdCompe).HasColumnName("id_compe");
+            entity.Property(e => e.Puesto).HasColumnName("puesto");
+            entity.Property(e => e.ResultadoClasificacion)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("resultado_clasificacion");
+            entity.Property(e => e.ResultadoCuartos)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("resultado_cuartos");
+            entity.Property(e => e.ResultadoFinal)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("resultado_final");
+            entity.Property(e => e.ResultadoOctavos)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("resultado_octavos");
+            entity.Property(e => e.ResultadoSemifinal)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("resultado_semifinal");
+        });
+
+        modelBuilder.Entity<VistaViasClasificacion>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("vista_vias_clasificacion");
+
+            entity.Property(e => e.Clasificacion1)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("clasificacion_1");
+            entity.Property(e => e.Clasificacion2)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("clasificacion_2");
+            entity.Property(e => e.Deportista)
+                .HasMaxLength(101)
+                .IsUnicode(false)
+                .HasColumnName("deportista");
+            entity.Property(e => e.IdCompe).HasColumnName("id_compe");
+            entity.Property(e => e.Puesto).HasColumnName("puesto");
         });
 
         modelBuilder.Entity<VistaViasResultado>(entity =>
