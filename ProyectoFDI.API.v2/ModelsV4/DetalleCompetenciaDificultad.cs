@@ -21,6 +21,8 @@ public partial class DetalleCompetenciaDificultad
 
     public int? IdCom { get; set; }
 
+    public TimeSpan? TiempoRes { get; set; }
+
     public virtual Competencium? IdComNavigation { get; set; }
 
     public virtual Deportistum? IdDepNavigation { get; set; }

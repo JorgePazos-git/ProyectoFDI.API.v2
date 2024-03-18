@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoFDI.API.v2.ModelsV4;
-using System.ComponentModel.DataAnnotations;
 
 public partial class VistaViasResultado
 {
@@ -20,4 +20,6 @@ public partial class VistaViasResultado
     public string? Clasificacion2 { get; set; }
 
     public string? Final { get; set; }
+
+    public TimeSpan? Tiempo { get; set; }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoFDI.API.v2.ModelsV4;
-using System.ComponentModel.DataAnnotations;
 
 public partial class VistaCompetencium
 {
